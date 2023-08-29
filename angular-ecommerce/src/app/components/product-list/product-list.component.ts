@@ -17,9 +17,9 @@ export class ProductListComponent implements OnInit {
   constructor(private productServce:ProductService ,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
-    
     this.route.paramMap.subscribe(()=>{
-      this.listProducts();
+      //this.listProducts();
+      this.getProductListBycategoryId();
     });
   }
 
@@ -41,6 +41,7 @@ listProducts(){
 //get the "id" param string . Convert string to number using + symbol
      this.currentCategoryId=+this.route.snapshot.paramMap.get('id')!;
   }
+  console.log("currentCategoryId="+this.currentCategoryId);
     this.productServce.getProductListBycategoryId(this.currentCategoryId).subscribe(
       ( data: Product[])=>{
         this.products=data;
