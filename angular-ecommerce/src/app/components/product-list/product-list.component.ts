@@ -13,6 +13,7 @@ export class ProductListComponent implements OnInit {
  
   public products: Product[]=[];
   currentCategoryId:number=1;
+  searchMode :boolean=false;
 
   constructor(private productServce:ProductService ,private route:ActivatedRoute) { }
 
@@ -35,18 +36,36 @@ listProducts(){
   }
 
   getProductListBycategoryId(){
-      // check if "id" parameter is available
-  const hasCategoryId: boolean =this.route.snapshot.paramMap.has('id');
-  if(hasCategoryId){
-//get the "id" param string . Convert string to number using + symbol
-     this.currentCategoryId=+this.route.snapshot.paramMap.get('id')!;
+    this.searchMode =this.route.snapshot.paramMap.has('keyword');
+    if(this.searchMode){
+      this.handleSearchProducts();
+    }else{
+      this.handleListProducts();
+    }
   }
-  console.log("currentCategoryId="+this.currentCategoryId);
-    this.productServce.getProductListBycategoryId(this.currentCategoryId).subscribe(
-      ( data: Product[])=>{
-        this.products=data;
+  handleSearchProducts(){
+    const theKeyWord: string=this.route.snapshot.paramMap.get('keyword')!
+    // now search for the products using keyword
+    this.productServce.searchProducts(theKeyWord).subscribe(
+      (data :Product[]) =>{
+        this.products =data;
       }
     )
+  }
+
+  handleListProducts(){
+      // check if "id" parameter is available
+      const hasCategoryId: boolean =this.route.snapshot.paramMap.has('id');
+      if(hasCategoryId){
+    //get the "id" param string . Convert string to number using + symbol
+         this.currentCategoryId=+this.route.snapshot.paramMap.get('id')!;
+      }
+      console.log("currentCategoryId="+this.currentCategoryId);
+        this.productServce.getProductListBycategoryId(this.currentCategoryId).subscribe(
+          ( data: Product[])=>{
+            this.products=data;
+          }
+        )
   }
 
 }
