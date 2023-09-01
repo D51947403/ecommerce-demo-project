@@ -4,7 +4,6 @@ import com.singraul.ecommerce.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,4 +14,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     // behind the scene below query will be executed on the database
     // select * from product where category_id=?
     Page<Product> findByCategoryId(@RequestParam("id") Long id, Pageable pageable);
+    // Behind the scene below query will be executed on the database
+    // select * from Product P where p.name LIKE concat('%',:name,'%')
+    Page<Product> findByNameContaining(@RequestParam("name")String name ,Pageable pageable);
 }
