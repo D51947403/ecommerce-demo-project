@@ -10,6 +10,7 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+
  
   public products: Product[]=[];
   currentCategoryId:number=1;
@@ -18,7 +19,7 @@ export class ProductListComponent implements OnInit {
 
   //new properties for server side pagination
   thePageNumber:number=1;
-  thePageSize:number=10;
+  thePageSize:number=5;
   theTotalElements:number=0;
 
   constructor(private productServce:ProductService ,private route:ActivatedRoute) { }
@@ -29,8 +30,6 @@ export class ProductListComponent implements OnInit {
       this.getProductListBycategoryId();
     });
   }
-
-
 
 listProducts(){   
   this.productServce.getProductList().subscribe(  
@@ -87,6 +86,11 @@ listProducts(){
             this.theTotalElements=data.page.totalElements;
           }
         )
-  }
+        }
 
-}
+        updatePageSize(pageSize: string) {
+           this.thePageSize=+pageSize;
+           this.thePageNumber=1;
+           this.listProducts();
+          }
+  }
