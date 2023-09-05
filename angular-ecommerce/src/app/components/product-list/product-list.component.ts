@@ -16,7 +16,7 @@ export class ProductListComponent implements OnInit {
   currentCategoryId:number=1;
   previousCategoryId:number=1;
   searchMode :boolean=false;
-
+  peviouskeyword:string="";
   //new properties for server side pagination
   thePageNumber:number=1;
   thePageSize:number=5;
@@ -50,11 +50,17 @@ listProducts(){
   }
   handleSearchProducts(){
     const theKeyWord: string=this.route.snapshot.paramMap.get('keyword')!
+//if we have a different keyword than prevoius 
+//then set thePageNumber to 1
+if(this.peviouskeyword !=theKeyWord){
+  this.thePageNumber=1;
+}
+this.peviouskeyword=theKeyWord;
+    console.log(`keyword=${theKeyWord},thePageNumber=${this.thePageNumber}`);
+
     // now search for the products using keyword
-    this.productServce.searchProducts(theKeyWord).subscribe(
-      (data :Product[]) =>{
-        this.products =data;
-      }
+    this.productServce.searchProductsPaginate(this.thePageNumber-1,this.thePageSize ,theKeyWord).subscribe(
+     this.processResult()
     )
   }
 
@@ -79,12 +85,7 @@ listProducts(){
      console.log("thePageNumber="+this.thePageNumber);
       //get the products for the given category id
         this.productServce.getProductListPaginate(this.thePageNumber -1, this.thePageSize , this.currentCategoryId).subscribe(
-          ( data: any)=>{
-            this.products= data._embedded.products;
-            this.thePageNumber=data.page.number +1;
-            this.thePageSize=data.page.size;
-            this.theTotalElements=data.page.totalElements;
-          }
+          this.processResult()
         )
         }
 
@@ -92,5 +93,14 @@ listProducts(){
            this.thePageSize=+pageSize;
            this.thePageNumber=1;
            this.listProducts();
+          }
+
+          processResult(){
+            return (data :any)=>{
+              this.products=data._embedded.products;
+              this.thePageNumber=data.page.number +1;
+              this.thePageSize=data.page.size;
+              this.theTotalElements=data.page.totalElements;
+            }
           }
   }
