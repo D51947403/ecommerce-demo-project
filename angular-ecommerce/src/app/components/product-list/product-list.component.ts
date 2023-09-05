@@ -13,7 +13,13 @@ export class ProductListComponent implements OnInit {
  
   public products: Product[]=[];
   currentCategoryId:number=1;
+  previousCategoryId:number=1;
   searchMode :boolean=false;
+
+  //new properties for server side pagination
+  thePageNumber:number=1;
+  thePageSize:number=10;
+  theTotalElements:number=0;
 
   constructor(private productServce:ProductService ,private route:ActivatedRoute) { }
 
@@ -61,9 +67,24 @@ listProducts(){
          this.currentCategoryId=+this.route.snapshot.paramMap.get('id')!;
       }
       console.log("currentCategoryId="+this.currentCategoryId);
-        this.productServce.getProductListBycategoryId(this.currentCategoryId).subscribe(
-          ( data: Product[])=>{
-            this.products=data;
+     //check if we have different category than previous
+     //Note: Angular will reuse a component if it is currently being viewed
+
+     //if we have a different category id than previous
+     //then set thePageNumber back to 1
+     if(this.currentCategoryId !=this.previousCategoryId){
+      this.thePageNumber=1;
+     }
+     this.previousCategoryId=this.currentCategoryId;
+     console.log("previousCategoryId="+this.previousCategoryId);
+     console.log("thePageNumber="+this.thePageNumber);
+      //get the products for the given category id
+        this.productServce.getProductListPaginate(this.thePageNumber -1, this.thePageSize , this.currentCategoryId).subscribe(
+          ( data: any)=>{
+            this.products= data._embedded.products;
+            this.thePageNumber=data.page.number +1;
+            this.thePageSize=data.page.size;
+            this.theTotalElements=data.page.totalElements;
           }
         )
   }
