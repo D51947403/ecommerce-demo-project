@@ -35,6 +35,7 @@
                   <div class="col-md-9" >
                   <ngb-pagination [collectionSize]="theTotalElements" 
                   [(page)]="thePageNumber" [pageSize]="thePageSize"
+                  [maxSize]="5"
                    [rotate]="true" 
                    [boundaryLinks]="true" 
                    (pageChange)="listProducts()" >
