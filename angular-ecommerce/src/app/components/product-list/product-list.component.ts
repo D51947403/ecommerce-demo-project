@@ -10,7 +10,6 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-
  
   public products: Product[]=[];
   currentCategoryId:number=1;
@@ -103,4 +102,10 @@ this.peviouskeyword=theKeyWord;
               this.theTotalElements=data.page.totalElements;
             }
           }
+
+          addToCart(theProduct: Product) {
+            console.log(`Adding to cart :${theProduct.name},${theProduct.unitPrice}`);
+            // todo ... do the real work
+
+            }
   }
