@@ -20,8 +20,9 @@ export class CartDetailsComponent implements OnInit {
   }
 
   listCartDetails() {
+    console.log(`listCartDetails called`);
     //get a handle to the cart items
-    this.cartService.cartItems;
+    this.cartItems=this.cartService.cartItems;
     //subscribe to the cart status totalPrice
     this.cartService.totalPrice.subscribe(  
       data => this.totalPrice = data
@@ -35,5 +36,5 @@ export class CartDetailsComponent implements OnInit {
     this.cartService.computeCartTotals();
   }
 
-  
+
 }

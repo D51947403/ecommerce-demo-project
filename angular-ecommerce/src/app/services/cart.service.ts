@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 })
 export class CartService {
 
-  cartItems: CartItem[] = [];
+  public cartItems: CartItem[] = [];
 
   totalPrice: Subject<number> = new Subject<number>;
   totalQuantity: Subject<number> = new Subject<number>();
@@ -59,6 +59,7 @@ export class CartService {
     , subTotalPrice : ${subTotalPrice}`)
     }
     console.log(`totalPrice : ${totalPriceValue.toFixed(2)} , totalQuantity : ${totalQuantityValue}`);
-    console.log('----------------');
+    //console.log('----------------');
+   // console.log(JSON.stringify(this.cartItems));
   }
 }
