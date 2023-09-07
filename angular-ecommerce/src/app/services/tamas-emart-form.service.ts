@@ -13,7 +13,7 @@ export class TamasEmartFormService {
     // build an array for "Month" drop down list
     // start at current month and loop untill 
     console.log('start month '+startMonth);
-    for (let theMonth=1; theMonth<=12 ;theMonth++){
+    for (let theMonth=startMonth; theMonth<=12 ;theMonth++){
       data.push(theMonth);
     }
     return of(data);

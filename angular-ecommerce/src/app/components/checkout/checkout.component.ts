@@ -82,7 +82,24 @@ export class CheckoutComponent implements OnInit {
     if (event.target.checked) {
       this.checkoutFormGroup.controls['billingAddress'].setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
     }
-
   }
+
+  handleMonthsAndYears() {
+    console.log("handleMonthsAndYears");
+   const creditCardFormGroup=this.checkoutFormGroup.get('creditCard');
+   const currentYear:number =new Date().getFullYear();
+   const selectedYear:number =Number(creditCardFormGroup?.value.expirationYear);
+   // if the current year equals the selected year, then start with the current month
+   let startMonth:number;
+   if(currentYear ===selectedYear){
+     startMonth=new Date().getMonth()+1;
+   }else{
+     startMonth=1;
+   }
+   this.tamasService.getCreditCardMonths(startMonth).subscribe(
+    data => this.creditCardMonths=data
+   );
+  }
+
 
 }
