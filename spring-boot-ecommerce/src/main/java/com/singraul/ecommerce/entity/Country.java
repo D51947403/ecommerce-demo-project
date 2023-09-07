@@ -1,5 +1,6 @@
 package com.singraul.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class Country {
     @Column(name="name")
     private String name;
     @OneToMany(mappedBy = "country")
+    // ignoring the state data
+    @JsonIgnore
     private List<State> stateList;
 
 }
